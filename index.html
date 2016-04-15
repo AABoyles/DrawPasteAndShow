@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Draw A Polygon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="assets/style.css" type="text/css">
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <div id="info">
+        <ul>
+          <li><a href="#output">Draw</a></li>
+          <li><a href="#input">Paste 'n Show'</a></li>
+        </ul>
+
+        <div id="output">
+          <label for="outputFormatType">Format</label>
+          <select name="outputFormatType" id="outputFormatType">
+              <option value="wkt" selected="selected">Well-Known Text (WKT)</option>
+              <option value="geojson">GeoJSON</option>
+              <option value="atom">Atom</option>
+              <option value="kml">KML</option>
+              <option value="georss">GeoRSS</option>
+              <option value="gml2">GML (v2)</option>
+              <option value="gml3">GML (v3)</option>
+              <option value="gpx">GPX</option>
+              <option value="encoded_polyline">Encoded Polyline</option>
+          </select><br />
+          <label for="outproj">Output Projection:</label>
+          <select id="outproj" onchange="updateFormats()">
+            <option value="EPSG:4326" selected="selected">EPSG:4326</option>
+            <option value="EPSG:900913">Spherical Mercator</option>
+          </select><br />
+          <label for="prettyPrint">Pretty print</label>
+          <input id="prettyPrint" type="checkbox" name="prettyPrint" value="1"><br />
+          <textarea id="outputtext"></textarea>
+        </div>
+
+        <div id="input">
+          <label for="inputFormatType">Format</label>
+          <select name="inputFormatType" id="outputFormatType">
+              <option value="wkt" selected="selected">Well-Known Text (WKT)</option>
+              <option value="geojson">GeoJSON</option>
+              <option value="atom">Atom</option>
+              <option value="kml">KML</option>
+              <option value="georss">GeoRSS</option>
+              <option value="gml2">GML (v2)</option>
+              <option value="gml3">GML (v3)</option>
+              <option value="gpx">GPX</option>
+              <option value="encoded_polyline">Encoded Polyline</option>
+          </select><br />
+          <label for="inproj">Input Projection:</label>
+          <select id="inproj" onchange="updateFormats()">
+            <option value="EPSG:4326" selected="selected">EPSG:4326</option>
+            <option value="EPSG:900913">Spherical Mercator</option>
+          </select><br />
+          <textarea id="inputtext"></textarea><br />
+          <input type="button" value="add feature" onclick="deserialize();"><br />
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/openlayers/2.13.1/OpenLayers.js"></script>
+    <script src="assets/app.js"></script>
+  </body>
+</html>
