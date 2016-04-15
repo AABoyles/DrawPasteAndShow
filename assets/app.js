@@ -12,34 +12,45 @@ $(function(){
     map.addLayers([wms, vectors]);
     map.addControl(new OpenLayers.Control.MousePosition());
     map.addControl(new OpenLayers.Control.EditingToolbar(vectors));
+    map.addControl(new OpenLayers.Control.ModifyFeature(vectors));
 
-    var options = {
+    var select = new OpenLayers.Control.SelectFeature(vectors, {
         hover: true,
         onSelect: serialize
-    };
-    var select = new OpenLayers.Control.SelectFeature(vectors, options);
+    });
     map.addControl(select);
     select.activate();
 
     updateFormats();
 
-    map.setCenter(new OpenLayers.LonLat(0, 0), 4);
+    map.setCenter(new OpenLayers.LonLat(0, 0), 3);
+
+    $("#outputFormatType").change(function(){
+      console.log($(this).val());
+      if($(this).val()=="geojson"){
+        $("#pp").fadeIn();
+      } else {
+        $("#pp").hide();
+      }
+      serialize();
+    })
 });
 
 function serialize(feature) {
+    if(feature){}else{feature = vectors.features;}
     var type = document.getElementById("outputFormatType").value;
     var pretty = document.getElementById("prettyPrint").checked;
     var str = formats['out'][type].write(feature, pretty);
     str = str.replace(/,/g, ', ');
-    document.getElementById('outputtext').value = str;
+    $('#outputtext').val(str);
 }
 
 function deserialize() {
-    var element = document.getElementById('inputtext');
-    var type = document.getElementById("outputFormatType").value;
-    var features = formats['in'][type].read(element.value);
+    var type = $("#outputFormatType").val();
+    var features = formats['in'][type].read($('#inputtext').val());
     var bounds;
     if(features) {
+        vectors.removeAllFeatures();
         if(features.constructor != Array) {
             features = [features];
         }
@@ -53,7 +64,7 @@ function deserialize() {
         vectors.addFeatures(features);
         map.zoomToExtent(bounds);
     } else {
-        alert('Bad input ' + type);
+        alert('Couldn\'t parse as ' + type + '. Is that actually the right format?');
     }
 }
 
